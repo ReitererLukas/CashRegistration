@@ -4,14 +4,20 @@ services:
     depends_on:
       - backend
     build:
+      args:
+        VUE_APP_API_HOST: https://60819-10921.pph-server.de
       context: ./frontend
-      target: development
+      target: deployment
     ports:
-      - 8080:8080
+      - 80:80
+      - 443:443
+      - 3000:3000
     volumes:
       - ./frontend/cash_frontend:/app
-    environment:
-      VUE_APP_API_HOST: http://localhost:8000
+      - "./certbot/conf:/etc/letsencrypt"
+      - "./certbot/www:/var/www/certbot"
+    restart: unless-stopped
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
   backend:
     build:
@@ -28,6 +34,7 @@ services:
       - api_token_key
     env_file:
       - ./backend/.env
+    restart: unless-stopped
 
   db:
     image: postgres
