@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// npx prisma generate --schema .\src\prisma\schema.prisma
+// npx prisma db push --schema .\src\prisma\schema.prisma
+// npx prisma studio --schema .\src\prisma\schema.prisma
+
+// better than generate and push
+// npx prisma migrate dev --name init --schema .\src\prisma\schema.prisma
+// npx prisma generate --schema .\src\prisma\schema.prisma
+// npx prisma migrate reset --schema .\src\prisma\schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  categoryId Int     @id @default(autoincrement())
+  value      String  @unique @db.VarChar(50)
+  entries    Entry[]
+}
+
+model Entry {
+  entryId      Int           @id @default(autoincrement())
+  createdAt    DateTime      @default(now())
+  lastUpdate   DateTime      @updatedAt
+  amount       Float
+  userid       Int
+  user         User          @relation(fields: [userid], references: [userid])
+  currencyName String        @db.VarChar(255)
+  currency     Currency      @relation(fields: [currencyName], references: [name])
+  members      EntryMember[]
+  categoryId   Int?
+  category     Category?     @relation(fields: [categoryId], references: [categoryId])
+}
+
+model Currency {
+  name    String  @id @db.VarChar(255)
+  symbol  String  @db.VarChar(255)
+  entries Entry[]
+}
+
+model EntryMember {
+  entryId Int
+  entry   Entry @relation(fields: [entryId], references: [entryId])
+  userId  Int
+  user    User  @relation(fields: [userId], references: [userid])
+
+  @@id([entryId, userId])
+}
+
+model User {
+  userid            Int           @id @default(autoincrement())
+  email             String        @unique
+  firstname         String
+  lastname          String
+  password          String
+  createdAt         DateTime      @default(now())
+  verificationToken String?
+  ownEntries        Entry[]
+  memberOf          EntryMember[]
+}

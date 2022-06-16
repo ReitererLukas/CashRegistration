@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      target: development
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend/cash_frontend:/app
+    environment:
+      VUE_APP_API_HOST: http://localhost:8000
+
+  backend:
+    build:
+      context: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_EMV_API_TOKEN_FILE: /run/secrets/api_token_key
+    ports:
+      - "3000:3000"
+    secrets:
+      - password_db
+      - api_token_key
+    env_file:
+      - ./backend/.env
+
+  db:
+    image: postgres
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: cashRegistration
+      POSTGRES_USER: cashier
+      POSTGRES_PASSWORD_FILE: /run/secrets/password_db
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    secrets:
+      - password_db
+
+  certbot:
+    image: certbot/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - "./certbot/conf:/etc/letsencrypt"
+      - "./certbot/www:/var/www/certbot"
+
+secrets:
+  password_db:
+    file: ./secrets/password_db
+  api_token_key:
+    file: ./secrets/api_token_key
