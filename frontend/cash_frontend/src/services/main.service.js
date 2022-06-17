@@ -34,7 +34,7 @@ class APIConnection {
     return await fetch(this.url + path, {
       method: "post",
       headers: this._postHeaders(auth, auth),
-      body: JSON.stringify({entry: body})
+      body: JSON.stringify(body)
     }).then(res => {
       if (res.ok) {
         return res.json()
@@ -62,7 +62,16 @@ class APIConnection {
   }
 
   async getCategories() {
-    return await this._getRequest("/entries/categories", false)
+    return await this._getRequest("/entries/categories")
+  }
+
+  async addCategory(category) {
+    return await this._postRequest('/admin/addCategory', category, true);
+  }
+
+  async addCurrency(currency) {
+    console.log(JSON.stringify(currency))
+    return await this._postRequest('/admin/addCurrency', currency, true);
   }
 }
 

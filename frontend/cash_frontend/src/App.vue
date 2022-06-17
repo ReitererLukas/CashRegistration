@@ -31,7 +31,7 @@
 <script>
 import AddEntryDialog from "@/components/dialogs/AddEntryDialog.vue";
 import AuthDialog from "@/components/dialogs/AuthDialog.vue";
-import api from "@/services/entry.service";
+import api from "@/services/main.service";
 import userService from "@/services/user.service";
 import { mapActions, mapGetters } from "vuex";
 
@@ -76,10 +76,12 @@ export default {
     },
     async add(amount, currencyName, users, category) {
       let newEntry = await api.addEntry({
-        amount: amount,
-        currencyName: currencyName,
-        users: users,
-        category: category
+        entry: {
+          amount: amount,
+          currencyName: currencyName,
+          users: users,
+          category: category
+        }
       });
       this.openAddDialog = false;
       this.addEntry(newEntry);

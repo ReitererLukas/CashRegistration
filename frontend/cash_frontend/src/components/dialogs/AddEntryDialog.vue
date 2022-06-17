@@ -200,7 +200,7 @@ body.dialogOpen {
 
 
 <script>
-import api from "../../services/entry.service";
+import api from "../../services/main.service";
 import { categories } from "@/util/category";
 
 export default {

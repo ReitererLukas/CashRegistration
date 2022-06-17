@@ -1,22 +1,5 @@
 version: "3.9"
 services:
-  frontend:
-    depends_on:
-      - backend
-    build:
-      args:
-        VUE_APP_API_HOST: https://60819-10921.pph-server.de
-      context: ./frontend
-      target: deployment
-    ports:
-      - 80:80
-      - 443:443
-      - 3000:3000
-    volumes:
-      - ./frontend/cash_frontend:/app
-      - "./certbot/conf:/etc/letsencrypt"
-      - "./certbot/www:/var/www/certbot"
-    restart: unless-stopped
 
   backend:
     build:
@@ -55,13 +38,6 @@ services:
       retries: 5
     secrets:
       - password_db
-
-  certbot:
-    image: certbot/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    volumes:
-      - "./certbot/conf:/etc/letsencrypt"
-      - "./certbot/www:/var/www/certbot"
 
 secrets:
   password_db:

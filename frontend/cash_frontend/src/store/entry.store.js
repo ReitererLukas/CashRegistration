@@ -1,4 +1,4 @@
-import api from "@/services/entry.service";
+import api from "@/services/main.service";
 
 export default {
   namespaced: true,

@@ -92,7 +92,7 @@ h1 {
 <script>
 import EntryList from "../components/lists/EntryList.vue";
 import AddEntryDialog from "@/components/dialogs/AddEntryDialog.vue";
-import api from "@/services/entry.service";
+import api from "@/services/main.service";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
