@@ -2,7 +2,7 @@ import { prisma } from '@/prisma/Prisma';
 import { comparePwd, createJwt, hashPwd } from '@/util/authentication';
 import exc from '@/util/Exceptions';
 
-async function signup(email: string, firstname: string, lastname: string, pwd: string): Promise<string> {
+async function signup(email: string, firstname: string, lastname: string, pwd: string): Promise<object> {
   const userMail = await prisma.user.findUnique({
     where: {
       email: email
@@ -22,11 +22,11 @@ async function signup(email: string, firstname: string, lastname: string, pwd: s
     }
   });
 
-  return createJwt(user.userid);
+  return { token: createJwt(user.userid, user.isAdmin), isAdmin: user.isAdmin };
 }
 
 
-async function login(email: string, pwd: string): Promise<string> {
+async function login(email: string, pwd: string): Promise<object> {
   const user = await prisma.user.findUnique({
     where: {
       email: email
@@ -37,7 +37,7 @@ async function login(email: string, pwd: string): Promise<string> {
     throw new exc.CredentialsInvalidException();
   }
 
-  return createJwt(user!.userid);
+  return { token: createJwt(user!.userid, user!.isAdmin), isAdmin: user.isAdmin };
 }
 
 

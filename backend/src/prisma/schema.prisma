@@ -64,4 +64,5 @@ model User {
   verificationToken String?
   ownEntries        Entry[]
   memberOf          EntryMember[]
+  isAdmin           Boolean       @default(false)
 }

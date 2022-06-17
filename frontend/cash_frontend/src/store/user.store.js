@@ -2,7 +2,8 @@
 export default {
   namespaced: true,
   state: () => ({
-      token: "",
+    token: "",
+    isAdmin: false,
   }),
   getters: {
     isLoggedIn(state) {
@@ -10,24 +11,31 @@ export default {
     },
     token(state) {
       return state.token;
+    },
+    isUserAdmin(state) {
+      return state.isAdmin;
     }
   },
   mutations: {
-    setToken(state, token) {
+    setToken(state, { token, isAdmin }) {
       state.token = token;
+      state.isAdmin = isAdmin;
     },
     clearToken(state) {
       state.token = "";
+      state.isAdmin = false;
     }
   },
   actions: {
     clearToken(context) {
       context.commit("clearToken");
-      localStorage.removeItem("token", "");
+      localStorage.removeItem("token");
+      localStorage.removeItem("isAdmin");
     },
-    setToken(context, token) {
-      context.commit("setToken", token);
-      localStorage.setItem("token", token);
+    setToken(context, paras) {
+      context.commit("setToken", paras);
+      localStorage.setItem("token", paras.token);
+      localStorage.setItem("isAdmin", paras.isAdmin);
     }
   },
 }

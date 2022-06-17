@@ -41,7 +41,7 @@ async function testData() {
   entryMembers.push({ entryId: 9, userId: 5 });
   entryMembers.push({ entryId: 10, userId: 4 });
 
-  users.push({ email: 'user1@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser1!") })
+  users.push({ email: 'user1@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser1!"), isAdmin: true })
   users.push({ email: 'user2@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser2!") })
   users.push({ email: 'user3@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser3!") })
   users.push({ email: 'user4@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser4!") })

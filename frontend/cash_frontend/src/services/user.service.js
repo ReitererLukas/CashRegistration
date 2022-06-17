@@ -30,7 +30,7 @@ class UserService {
         return res.json()
       }
     }).then(token => {
-      tokenAction(token.accessToken);
+      tokenAction({token: token.token, isAdmin: token.isAdmin});
     });
   }
 
@@ -49,7 +49,7 @@ class UserService {
         return res.json()
       }
     }).then(token => {
-      tokenAction(token.accessToken);
+      tokenAction(token.token, token.isAdmin);
     });
   }
 }

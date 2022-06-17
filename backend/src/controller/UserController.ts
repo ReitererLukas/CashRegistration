@@ -2,14 +2,14 @@ import { Request, Response, NextFunction } from 'express'
 import { service } from '@/services/UserService'
 
 async function login(req: Request, resp: Response, next: NextFunction) {
-  const token: string = await service.login(req.body.email, req.body.pwd);
-  resp.json({ accessToken: token });
+  const token: object = await service.login(req.body.email, req.body.pwd);
+  resp.json(token);
   next();
 }
 
 async function signup(req: Request, resp: Response, next: NextFunction) {
-  const token: string = await service.signup(req.body.email, req.body.firstname, req.body.lastname, req.body.pwd);
-  resp.json({ accessToken: token });
+  const token: object = await service.signup(req.body.email, req.body.firstname, req.body.lastname, req.body.pwd);
+  resp.json(token);
   next();
 }
 

@@ -1,3 +1,4 @@
+import { store } from '@/store'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -5,6 +6,18 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import('../views/HomeView.vue')
+  },
+  {
+    path: '/adminView',
+    name: 'admin',
+    component: () => import('../views/AdminView.vue'),
+    beforeEnter: (to, from, next) => {
+      if(store.getters['userstore/isUserAdmin']) {
+        next();
+      } else {
+        next('/');
+      }
+    }
   }
 ]
 

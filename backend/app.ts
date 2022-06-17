@@ -5,12 +5,9 @@ import { exec } from 'child_process';
 import cors from 'cors';
 import express, { Express } from 'express';
 import readSecrets from '@/util/secrets';
-console.log("Hallo")
-console.log(process.env.NODE_ENV_STAGE)
 
 // replace by dev environment
 if (process.env.NODE_ENV_STAGE != "PROD") {
-  console.log("1234");
   exec("reset.sh", (error, stdout, stderr) => {
     if (!error) {
       console.log("> Database seeded");

@@ -1,7 +1,10 @@
 <template>
   <nav>
-    <span class="home123">Home</span>
-    <!-- <router-link to="/">Home</router-link> -->
+    <!-- <span class="home123">Home</span> -->
+    <span>
+      <router-link class="navItem" to="/">Home</router-link>
+      <router-link class="navItem" v-if="this.isUserAdmin" to="/adminView">Admin</router-link>
+    </span>
 
     <span class="actions">
       <span v-if="this.isLoggedIn" @click="() => this.openAddDialog = true" class="addBut">Hinzufügen</span>
@@ -47,13 +50,16 @@ export default {
   },
 
   created() {
-    if (localStorage.getItem("email") != null) {
-      this.login(localStorage.getItem("email"), localStorage.getItem("password"), false);
+    if (localStorage.getItem('token') != null) {
+      this.setToken({ token: localStorage.getItem('token'), isAdmin: localStorage.getItem('isAdmin') });
+    }
+    if (localStorage.getItem("email") != null && !this.isLoggedIn) {
+      this.login(localStorage.getItem("email"), localStorage.getItem("password"), true);
     }
   },
 
   computed: {
-    ...mapGetters('userstore', ['isLoggedIn'])
+    ...mapGetters('userstore', ['isLoggedIn', 'isUserAdmin'])
   },
 
   methods: {
@@ -100,6 +106,10 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
+.navItem {
+  margin-right: 20px;
+}
+
 .addBut {
   background-color: #4F9BF8;
   padding: 5px;
@@ -135,8 +145,9 @@ body {
   align-items: center;
 }
 
-.home123 {
+a {
   font-weight: 600;
+  color: #7A98A9;
 }
 
 nav {

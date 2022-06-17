@@ -13,12 +13,11 @@ ENTRYPOINT /scripts/docker-init.sh
 FROM development AS build
 WORKDIR /app
 
-ARG VUE_APP_API_HOST
-ENV VUE_APP_API_HOST $VUE_APP_API_HOST
 COPY cash_frontend/package.json .
+COPY cash_frontend .
+
 RUN npm install
 RUN npm install -g @vue/cli
-COPY cash_frontend .
 RUN npm run build
 
 # deployment part

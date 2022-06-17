@@ -17,7 +17,6 @@ services:
       - "./certbot/conf:/etc/letsencrypt"
       - "./certbot/www:/var/www/certbot"
     restart: unless-stopped
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
   backend:
     build:
@@ -30,7 +29,6 @@ services:
     ports:
       - "3000:3000"
     secrets:
-      - password_db
       - api_token_key
     env_file:
       - ./backend/.env

@@ -12,9 +12,9 @@ async function comparePwd(plain: string, hashed: string): Promise<boolean> {
 }
 
 const secret: string = "HalloSecret1234!"
-function createJwt(userid: number): string {
+function createJwt(userid: number, isAdmin: boolean): string {
   // expires in 20 minutes
-  return jwt.sign({ userid: userid }, secret, { expiresIn: 60 * 20 });
+  return jwt.sign({ userid: userid, admin: isAdmin}, secret, { expiresIn: 60 * 20 });
 }
 
 function verifyJwt(token: string): any {
@@ -26,8 +26,6 @@ function verifyJwt(token: string): any {
     return user;
   });
 }
-
-
 
 export { hashPwd, createJwt, verifyJwt, comparePwd };
 
