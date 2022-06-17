@@ -1,10 +1,10 @@
 import { routes } from '@/routes/index';
 import { defaultExceptionHandler, exceptionHandler } from '@/util/exceptionHandler';
+import { secrets } from '@/util/secrets';
 import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import cors from 'cors';
 import express, { Express } from 'express';
-import readSecrets from '@/util/secrets';
 
 // replace by dev environment
 if (process.env.NODE_ENV_STAGE != "PROD") {
@@ -16,8 +16,7 @@ if (process.env.NODE_ENV_STAGE != "PROD") {
     }
   });
 } else {
-  console.log("123456789");
-  // readSecrets();
+  console.log("> Starting API")
   startApi();
 }
 

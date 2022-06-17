@@ -8,11 +8,13 @@ services:
       db:
         condition: service_healthy
     environment:
-      NODE_EMV_API_TOKEN_FILE: /run/secrets/api_token_key
+      NODE_ENV_API_TOKEN_FILE: /run/secrets/api_token_key
+      NODE_ENV_MAILS_FILE: /run/secrets/mail
     ports:
       - "3000:3000"
     secrets:
       - api_token_key
+      - mails
     env_file:
       - ./backend/.env
     restart: unless-stopped
@@ -21,8 +23,6 @@ services:
     image: postgres
     volumes:
       - ./db:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_DB: cashRegistration
       POSTGRES_USER: cashier
@@ -40,6 +40,8 @@ services:
       - password_db
 
 secrets:
+  mails:
+    file: ./secrets/mails
   password_db:
     file: ./secrets/password_db
   api_token_key:
