@@ -9,7 +9,7 @@ services:
         condition: service_healthy
     environment:
       NODE_ENV_API_TOKEN_FILE: /run/secrets/api_token_key
-      NODE_ENV_MAILS_FILE: /run/secrets/mail
+      NODE_ENV_MAILS_FILE: /run/secrets/mails
     ports:
       - "3000:3000"
     secrets:
