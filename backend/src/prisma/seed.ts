@@ -5,9 +5,10 @@ import { faker } from '@faker-js/faker';
 
 const currencies: any[] = [];
 const entries: any[] = [];
-const users: any[] = []
-const categories: any[] = []
-const entryMembers: any[] = []
+const users: any[] = [];
+const categories: any[] = [];
+const entryMembers: any[] = [];
+const exchanges: any[] = [];
 
 async function testData() {
 
@@ -46,6 +47,13 @@ async function testData() {
   users.push({ email: 'user3@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser3!") })
   users.push({ email: 'user4@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser4!") })
   users.push({ email: 'user5@mail.at', firstname: faker.name.firstName(), lastname: faker.name.lastName(), password: await hashPwd("IamUser5!") })
+
+  exchanges.push({userId: 1, amountFrom: 70, currencyNameFrom: "Euro", amountTo: 490, currencyNameTo: "Kuna"});
+  exchanges.push({userId: 1, amountFrom: 25, currencyNameFrom: "Euro", amountTo: 175, currencyNameTo: "Kuna"});
+  exchanges.push({userId: 1, amountFrom: 70, currencyNameFrom: "Kuna", amountTo: 10, currencyNameTo: "Euro"});
+  exchanges.push({userId: 1, amountFrom: 200, currencyNameFrom: "Euro", amountTo: 1400, currencyNameTo: "Kuna"});
+  exchanges.push({userId: 1, amountFrom: 700, currencyNameFrom: "Kuna", amountTo: 100, currencyNameTo: "Euro"});
+
 }
 
 async function seed() {
@@ -58,6 +66,7 @@ async function seed() {
   await prisma.currency.deleteMany();
   await prisma.user.deleteMany();
   await prisma.category.deleteMany();
+  await prisma.exchange.deleteMany();
 
   await prisma.category.createMany({
     data: categories
@@ -78,6 +87,10 @@ async function seed() {
   await prisma.entryMember.createMany({
     data: entryMembers
   });
+
+  await prisma.exchange.createMany({
+    data: exchanges
+  })
 
 }
 

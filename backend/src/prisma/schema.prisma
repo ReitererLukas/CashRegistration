@@ -40,9 +40,11 @@ model Entry {
 }
 
 model Currency {
-  name    String  @id @db.VarChar(255)
-  symbol  String  @db.VarChar(255)
-  entries Entry[]
+  name         String     @id @db.VarChar(255)
+  symbol       String     @db.VarChar(255)
+  entries      Entry[]
+  ExchangeFrom Exchange[] @relation(name: "from")
+  ExchangeTo   Exchange[] @relation(name: "to")
 }
 
 model EntryMember {
@@ -65,4 +67,17 @@ model User {
   ownEntries        Entry[]
   memberOf          EntryMember[]
   isAdmin           Boolean       @default(false)
+  Exchange          Exchange[]
+}
+
+model Exchange {
+  exchangeId       Int      @id @default(autoincrement())
+  amountFrom       Float
+  currencyNameFrom String   @db.VarChar(255)
+  currencyFrom     Currency @relation(fields: [currencyNameFrom], references: [name], name: "from")
+  amountTo         Float
+  currencyNameTo   String   @db.VarChar(255)
+  currencyTo       Currency @relation(fields: [currencyNameTo], references: [name], name: "to")
+  userId           Int
+  user             User     @relation(fields: [userId], references: [userid])
 }

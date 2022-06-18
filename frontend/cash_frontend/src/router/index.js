@@ -18,6 +18,18 @@ const routes = [
         next('/');
       }
     }
+  },
+  {
+    path: "/exchanges",
+    name: "exchangeView",
+    component: () => import('../views/ExchangeView.vue'),
+    beforeEnter: (to, from, next) => {
+      if(store.getters['userstore/isLoggedIn']) {
+        next();
+      } else {
+        next('/');
+      }
+    }
   }
 ]
 

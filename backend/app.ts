@@ -35,6 +35,7 @@ function startApi() {
   app.use('/entries', routes.entry);
   app.use('/', routes.user);
   app.use('/admin', routes.admin);
+  app.use('/exchange', routes.exchange);
 
   // exception handlers
   app.use(exceptionHandler);

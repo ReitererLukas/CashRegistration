@@ -3,6 +3,7 @@
     <!-- <span class="home123">Home</span> -->
     <span>
       <router-link class="navItem" to="/">Home</router-link>
+      <router-link class="navItem" v-if="this.isLoggedIn" to="/exchanges">Exchange</router-link>
       <router-link class="navItem" v-if="this.isUserAdmin" to="/adminView">Admin</router-link>
     </span>
 
@@ -63,7 +64,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("entrystore", ["addEntry"]),
+    ...mapActions("modelstore", ["addEntry"]),
     ...mapActions("userstore", ["clearToken", "setToken"]),
 
     async login(email, password, stayLoggedIn) {
@@ -89,6 +90,7 @@ export default {
     logout() {
       this.clearToken();
       this.removeCredentials();
+      this.$router.replace('/')
     },
     saveCredentials(email, password, stayLoggedIn) {
       if (stayLoggedIn) {

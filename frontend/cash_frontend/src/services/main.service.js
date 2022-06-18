@@ -1,3 +1,4 @@
+import store from "../store/";
 
 class APIConnection {
   url = "http://192.168.178.91:3000"
@@ -5,7 +6,7 @@ class APIConnection {
   _getHeaders(auth = false) {
     let headers = { "Accept": "application/json" }
     if (auth) {
-      headers["Authorization"] = "BEARER "+localStorage.getItem("token")
+      headers["Authorization"] = "BEARER " + localStorage.getItem("token")
     }
     return headers;
   }
@@ -30,19 +31,29 @@ class APIConnection {
     });
   }
 
-  async _postRequest(path, body, auth = false) {
+  async _postRequest(path, body, auth = false, response = true) {
     return await fetch(this.url + path, {
       method: "post",
       headers: this._postHeaders(auth, auth),
       body: JSON.stringify(body)
     }).then(res => {
-      if (res.ok) {
+      if (res.ok && response) {
         return res.json()
       }
-      if (res.status == 401) {
+      else if (res.status == 401) {
         // logout
+      } else {
+
       }
     });
+  }
+
+  async handleResponse(res, hasResponse) {
+
+  }
+
+  handleError (error) {
+    store.dispatch("alertstore/openAlert", {message: error});
   }
 
   async getAllEntries() {
@@ -66,12 +77,19 @@ class APIConnection {
   }
 
   async addCategory(category) {
-    return await this._postRequest('/admin/addCategory', category, true);
+    return await this._postRequest('/admin/addCategory', category, true, false);
   }
 
   async addCurrency(currency) {
-    console.log(JSON.stringify(currency))
-    return await this._postRequest('/admin/addCurrency', currency, true);
+    return await this._postRequest('/admin/addCurrency', currency, true, false);
+  }
+
+  async addExchange(exchange) {
+    return await this._postRequest('/exchange/add', { exchange: exchange }, true);
+  }
+
+  async getAllExchanges() {
+    return await this._getRequest("/exchange/getAll", true);
   }
 }
 

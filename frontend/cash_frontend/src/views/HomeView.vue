@@ -29,6 +29,9 @@
   <div class="addButton" @click="() => this.openAddDialog = true" v-if="this.isLoggedIn">
     <span class="material-icons" style="font-size: 48px">add</span>
   </div>
+
+
+  <AlertPop v-if="this.showAlert"/>
 </template >
         
 <style>
@@ -93,6 +96,7 @@ h1 {
 import EntryList from "../components/lists/EntryList.vue";
 import AddEntryDialog from "@/components/dialogs/AddEntryDialog.vue";
 import api from "@/services/main.service";
+import AlertPop from "@/components/popups/AlertPop.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -101,6 +105,7 @@ export default {
   components: {
     EntryList,
     AddEntryDialog,
+    AlertPop
   },
 
   data() {
@@ -115,8 +120,9 @@ export default {
 
   methods: {
     ...mapActions("userstore", ["clearToken", "setToken"]),
-    ...mapActions("entrystore", ["addEntry", "updateEntries"]),
-
+    ...mapActions("modelstore", ["addEntry", "updateEntries"]),
+    ...mapActions("alertstore", ["openAlert"]),
+    
     async fetchEntries() {
       await this.updateEntries();
     },
@@ -128,7 +134,8 @@ export default {
   },
   computed: {
     ...mapGetters('userstore', ['isLoggedIn']),
-    ...mapGetters('entrystore', ['entries']),
+    ...mapGetters('modelstore', ['entries']),
+    ...mapActions("alertstore", ["openAlert"]),
   }
 }
 </script>
