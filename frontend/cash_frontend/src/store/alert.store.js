@@ -24,6 +24,7 @@ export default {
   },
   actions: {
     openAlert(context, paras) {
+      console.log("Haloo")
       context.commit("openAlert", paras);
     },
     clearAlert(context) {

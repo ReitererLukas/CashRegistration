@@ -1,5 +1,20 @@
+import { store } from '@/store'
+
 class UserService {
-  url = "http://192.168.178.91:3000";
+  url = "http://localhost:3000";
+
+  
+  handleError(msg) {
+    store.dispatch("alertstore/openAlert", {message: msg})
+  }
+
+  async handleResponse(res, tokenAction) {
+    if (res.ok) {
+      res.json().then(token => tokenAction({token: token.token, isAdmin: token.isAdmin}))
+    } else {
+      res.json().then(data => this.handleError(data.message));
+    }
+  }
 
 
   _getHeaders(auth = false) {
@@ -25,13 +40,7 @@ class UserService {
         email: email,
         pwd: pwd
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-    }).then(token => {
-      tokenAction({token: token.token, isAdmin: token.isAdmin});
-    });
+    }).then(res => this.handleResponse(res, tokenAction));
   }
 
   async signup(email, firstname, lastname, pwd, tokenAction) {
@@ -44,13 +53,7 @@ class UserService {
         lastname: lastname,
         pwd: pwd
       })
-    }).then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-    }).then(token => {
-      tokenAction(token.token, token.isAdmin);
-    });
+    }).then(res => this.handleResponse(res, tokenAction));
   }
 }
 

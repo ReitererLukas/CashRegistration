@@ -135,7 +135,7 @@ export default {
   computed: {
     ...mapGetters('userstore', ['isLoggedIn']),
     ...mapGetters('modelstore', ['entries']),
-    ...mapActions("alertstore", ["openAlert"]),
+    ...mapGetters("alertstore", ["showAlert"]),
   }
 }
 </script>

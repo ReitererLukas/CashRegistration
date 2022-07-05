@@ -1,6 +1,5 @@
 import { routes } from '@/routes/index';
 import { defaultExceptionHandler, exceptionHandler } from '@/util/exceptionHandler';
-import { secrets } from '@/util/secrets';
 import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import cors from 'cors';
