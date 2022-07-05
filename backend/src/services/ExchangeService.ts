@@ -11,7 +11,7 @@ async function addExchange(userid: number, exchange: any) {
       userId: userid,
       amountFrom: exchange.amountFrom,
       currencyNameFrom: exchange.currencyNameFrom,
-      amountTo: exchange.amountFrom,
+      amountTo: exchange.amountTo,
       currencyNameTo: exchange.currencyNameTo,
     }
   });

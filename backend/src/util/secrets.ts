@@ -21,5 +21,4 @@ function readArray(secret: any): any {
 export const secrets = {
   stage: process.env.NODE_ENV_STAGE || "DEV",
   token_secret: read(process.env.NODE_ENV_API_TOKEN_FILE) || "tokenSecret",
-  mails: readArray(process.env.NODE_ENV_MAILS_FILE) || []
 };

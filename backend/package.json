@@ -8,8 +8,8 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s . -o ./dist/",
-    "start": "npx nodemon -r tsconfig-paths/register app.ts",
-    "start:prod": "prisma migrate deploy && node dist/app.js",
+    "dev": "npx nodemon -r tsconfig-paths/register app.ts",
+    "prod": "prisma migrate deploy && node dist/app.js",
     "test": "npx nodemon -r tsconfig-paths/register test.ts"
   },
   "author": "",

@@ -9,9 +9,6 @@ services:
         condition: service_healthy
     environment:
       NODE_ENV_API_TOKEN_FILE: /run/secrets/api_token_key
-      NODE_ENV_MAILS_FILE: /run/secrets/mails
-    ports:
-      - "3000:3000"
     secrets:
       - api_token_key
       - mails
@@ -38,10 +35,17 @@ services:
       retries: 5
     secrets:
       - password_db
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+      - 3000:3000
+    restart: unless-stopped
 
 secrets:
-  mails:
-    file: ./secrets/mails
   password_db:
     file: ./secrets/password_db
   api_token_key:

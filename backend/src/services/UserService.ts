@@ -1,12 +1,8 @@
 import { prisma } from '@/prisma/Prisma';
 import { comparePwd, createJwt, hashPwd } from '@/util/authentication';
 import exc from '@/util/Exceptions';
-import { secrets } from "@/util/secrets";
 
 async function signup(email: string, firstname: string, lastname: string, pwd: string): Promise<object> {
-  if (!secrets.mails.includes(email) && secrets.stage == "PROD") {
-    throw new exc.InvalidEmailException();
-  }
 
   const userMail = await prisma.user.findUnique({
     where: {
